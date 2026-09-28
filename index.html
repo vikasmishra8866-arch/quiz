@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Champ</title>
+
+<style>
+
+:root{
+    --emerald:#064E3B;
+    --champagne:#F8E7C9;
+    --white:#ffffff;
+    --text:#09271f;
+    --muted:#6b746f;
+    --light:#f7faf8;
+    --red:#c62828;
+    --green:#16804e;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f7f8f6;
+    color:var(--text);
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    width:100%;
+    max-width:760px;
+    margin:auto;
+    padding:18px 15px 40px;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.brand-logo{
+    width:42px;
+    height:42px;
+    background:var(--emerald);
+    color:var(--champagne);
+    border-radius:13px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:900;
+    font-size:20px;
+}
+
+.brand-name{
+    font-size:16px;
+    font-weight:900;
+}
+
+.brand-sub{
+    font-size:10px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.leader-btn{
+    border:1px solid #d8e3de;
+    background:white;
+    color:var(--emerald);
+    border-radius:25px;
+    padding:10px 14px;
+    font-weight:800;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    background:var(--emerald);
+    color:white;
+    border-radius:30px;
+    padding:35px 22px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(6,78,59,.18);
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    right:-80px;
+    top:-90px;
+    background:rgba(255,255,255,.06);
+}
+
+.hero-small{
+    color:var(--champagne);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+
+.hero h1{
+    font-size:48px;
+    line-height:.98;
+    margin:12px 0 14px;
+    letter-spacing:-2px;
+}
+
+.hero p{
+    margin:0;
+    line-height:1.5;
+    color:#e5efeb;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:var(--champagne);
+    color:var(--emerald);
+    padding:9px 13px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:900;
+    margin-top:18px;
+}
+
+/* =========================
+   PANEL
+========================= */
+
+.panel{
+    background:white;
+    margin-top:15px;
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.title{
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:15px;
+}
+
+.label{
+    display:block;
+    color:var(--emerald);
+    font-size:12px;
+    font-weight:900;
+    margin:15px 0 7px;
+}
+
+.input,
+.select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d3dfda;
+    border-radius:15px;
+    outline:none;
+    background:#fbfcfb;
+}
+
+.input:focus,
+.select:focus{
+    border-color:var(--emerald);
+    box-shadow:0 0 0 4px rgba(6,78,59,.08);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.primary{
+    width:100%;
+    margin-top:18px;
+    border:none;
+    background:var(--emerald);
+    color:white;
+    padding:15px;
+    border-radius:16px;
+    font-weight:900;
+    box-shadow:0 10px 20px rgba(6,78,59,.18);
+}
+
+.primary:hover{
+    background:#08684e;
+}
+
+.secondary{
+    width:100%;
+    margin-top:10px;
+    border:1px solid #d3dfda;
+    background:white;
+    color:var(--emerald);
+    padding:13px;
+    border-radius:15px;
+    font-weight:900;
+}
+
+.note{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.5;
+    margin-top:9px;
+}
+
+/* =========================
+   QUIZ HEADER
+========================= */
+
+.quiz-header{
+    background:var(--emerald);
+    color:white;
+    padding:18px;
+    border-radius:24px;
+}
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.player-name{
+    font-weight:900;
+}
+
+.question-number{
+    font-size:11px;
+    color:#d6e5df;
+    margin-top:4px;
+}
+
+.timer{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:var(--champagne);
+    color:var(--emerald);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+    font-weight:900;
+}
+
+.timer.danger{
+    background:#ffe1dd;
+    color:var(--red);
+}
+
+.progress{
+    height:7px;
+    margin-top:16px;
+    background:rgba(255,255,255,.18);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:var(--champagne);
+}
+
+/* =========================
+   QUESTION
+========================= */
+
+.question-card{
+    background:white;
+    border-radius:25px;
+    padding:20px;
+    margin-top:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.category{
+    display:inline-block;
+    background:var(--champagne);
+    color:var(--emerald);
+    padding:7px 11px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:900;
+}
+
+.question{
+    font-size:27px;
+    line-height:1.2;
+    font-weight:900;
+    margin:17px 0 20px;
+}
+
+.options{
+    display:grid;
+    gap:10px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    background:white;
+    border:1px solid #d5e0db;
+    padding:14px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.option:hover{
+    border-color:var(--emerald);
+}
+
+.option-key{
+    width:32px;
+    height:32px;
+    border-radius:10px;
+    background:#edf4f0;
+    color:var(--emerald);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:900;
+    flex-shrink:0;
+}
+
+.option.correct{
+    background:#e8f7ef;
+    border-color:var(--green);
+}
+
+.option.wrong{
+    background:#fff0ee;
+    border-color:var(--red);
+}
+
+.option.removed{
+    opacity:.3;
+    pointer-events:none;
+}
+
+.lifelines{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:14px;
+}
+
+.life{
+    border:1px solid #d5e0db;
+    background:white;
+    color:var(--emerald);
+    padding:11px 5px;
+    border-radius:14px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.life.used{
+    opacity:.35;
+    text-decoration:line-through;
+}
+
+.hint{
+    display:none;
+    background:#fff5e5;
+    padding:12px;
+    border-radius:14px;
+    margin-top:12px;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.hint.show{
+    display:block;
+}
+
+.next-box{
+    display:none;
+    margin-top:13px;
+}
+
+.next-box.show{
+    display:block;
+}
+
+.next{
+    width:100%;
+    border:none;
+    background:var(--champagne);
+    color:var(--emerald);
+    padding:14px;
+    border-radius:15px;
+    font-weight:900;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result{
+    background:var(--emerald);
+    color:white;
+    border-radius:28px;
+    text-align:center;
+    padding:30px 20px;
+}
+
+.trophy{
+    font-size:55px;
+}
+
+.result-name{
+    font-size:28px;
+    font-weight:900;
+}
+
+.score{
+    color:var(--champagne);
+    font-size:55px;
+    font-weight:900;
+    margin-top:10px;
+}
+
+.score-label{
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:20px;
+}
+
+.stat{
+    background:rgba(255,255,255,.1);
+    border-radius:15px;
+    padding:12px 5px;
+}
+
+.stat strong{
+    display:block;
+    font-size:18px;
+}
+
+.stat span{
+    font-size:9px;
+    color:#d7e6e0;
+}
+
+/* =========================
+   LEADERBOARD
+========================= */
+
+.leader-row{
+    display:grid;
+    grid-template-columns:40px 1fr auto;
+    gap:10px;
+    align-items:center;
+    padding:11px;
+    border:1px solid #e0e7e4;
+    border-radius:16px;
+    margin-top:9px;
+}
+
+.rank{
+    width:32px;
+    height:32px;
+    border-radius:10px;
+    background:var(--champagne);
+    color:var(--emerald);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.leader-name{
+    font-weight:900;
+    font-size:13px;
+}
+
+.leader-info{
+    font-size:10px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.leader-score{
+    color:var(--emerald);
+    font-weight:900;
+    font-size:13px;
+}
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:500px){
+
+    .app{
+        padding:12px 11px 30px;
+    }
+
+    .hero{
+        padding:28px 18px;
+        border-radius:25px;
+    }
+
+    .hero h1{
+        font-size:39px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .question{
+        font-size:23px;
+    }
+
+    .panel{
+        padding:17px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<!-- =========================
+     TOP BAR
+========================= -->
+
+<div class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            Q
+        </div>
+
+        <div>
+            <div class="brand-name">
+                QUIZ CHAMP
+            </div>
+
+            <div class="brand-sub">
+                Learn • Play • Compete
+            </div>
+        </div>
+
+    </div>
+
+    <button
+        class="leader-btn"
+        onclick="openLeaderboard()">
+
+        🏆 Leaderboard
+
+    </button>
+
+</div>
+
+
+<!-- =========================
+     HOME SCREEN
+========================= -->
+
+<section
+    id="homeScreen"
+    class="screen active">
+
+    <div class="hero">
+
+        <div class="hero-small">
+            STUDENT CHALLENGE
+        </div>
+
+        <h1>
+            Think fast.<br>
+            Play smart.
+        </h1>
+
+        <p>
+            Answer questions, collect XP and climb
+            the leaderboard.
+        </p>
+
+        <div class="hero-badge">
+            ⚡ 30 seconds per question
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="title">
+            Start your quiz
+        </div>
+
+
+        <!-- NAME -->
+
+        <label class="label">
+            Your name
+        </label>
+
+        <input
+            id="nameInput"
+            class="input"
+            type="text"
+            maxlength="25"
+            placeholder="Enter your name">
+
+
+        <div class="grid">
+
+            <!-- CLASS -->
+
+            <div>
+
+                <label class="label">
+                    Class
+                </label>
+
+                <select
+                    id="classInput"
+                    class="select">
+
+                    <option>Class 6</option>
+                    <option>Class 7</option>
+                    <option>Class 8</option>
+                    <option>Class 9</option>
+                    <option selected>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SUBJECT -->
+
+            <div>
+
+                <label class="label">
+                    Subject
+                </label>
+
+                <select
+                    id="subjectInput"
+                    class="select">
+
+                    <option>Mixed Quiz</option>
+                    <option>Science</option>
+                    <option>Mathematics</option>
+                    <option>English</option>
+                    <option>General Knowledge</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="primary"
+            onclick="startQuiz()">
+
+            START QUIZ →
+
+        </button>
+
+
+        <div class="note">
+
+            Your name is entered manually.
+            This prototype saves scores locally
+            in this browser.
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="title">
+            How to play
+        </div>
+
+        <div class="note">
+
+            10 questions • 30 seconds each •
+            +100 XP for every correct answer.
+
+            <br><br>
+
+            Lifelines:
+
+            <b>50:50</b> •
+            <b>Hint</b> •
+            <b>Skip</b>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     QUIZ SCREEN
+========================= -->
+
+<section
+    id="quizScreen"
+    class="screen">
+
+
+    <div class="quiz-header">
+
+        <div class="quiz-top">
+
+            <div>
+
+                <div
+                    id="playerName"
+                    class="player-name">
+                    Player
+                </div>
+
+                <div
+                    id="questionNumber"
+                    class="question-number">
+                    Question 1 of 10
+                </div>
+
+            </div>
+
+
+            <div
+                id="timer"
+                class="timer">
+
+                30
+
+            </div>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                id="progressBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="question-card">
+
+
+        <div
+            id="category"
+            class="category">
+
+            GENERAL
+
+        </div>
+
+
+        <div
+            id="question"
+            class="question">
+
+            Question will appear here.
+
+        </div>
+
+
+        <div
+            id="options"
+            class="options">
+        </div>
+
+
+        <!-- LIFELINES -->
+
+        <div class="lifelines">
+
+            <button
+                id="fiftyBtn"
+                class="life"
+                onclick="useFifty()">
+
+                50:50
+
+            </button>
+
+
+            <button
+                id="hintBtn"
+                class="life"
+                onclick="useHint()">
+
+                💡 Hint
+
+            </button>
+
+
+            <button
+                id="skipBtn"
+                class="life"
+                onclick="useSkip()">
+
+                ⏭ Skip
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="hint"
+            class="hint">
+        </div>
+
+
+        <div
+            id="nextBox"
+            class="next-box">
+
+            <button
+                id="nextBtn"
+                class="next"
+                onclick="nextQuestion()">
+
+                NEXT QUESTION →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     RESULT SCREEN
+========================= -->
+
+<section
+    id="resultScreen"
+    class="screen">
+
+
+    <div class="result">
+
+        <div
+            id="trophy"
+            class="trophy">
+
+            🏆
+
+        </div>
+
+
+        <div
+            id="resultName"
+            class="result-name">
+
+            Player
+
+        </div>
+
+
+        <div
+            id="finalScore"
+            class="score">
+
+            0
+
+        </div>
+
+
+        <div class="score-label">
+            XP SCORE
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <strong id="correctResult">
+                    0
+                </strong>
+
+                <span>
+                    CORRECT
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                <strong id="accuracyResult">
+                    0%
+                </strong>
+
+                <span>
+                    ACCURACY
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                <strong id="timeResult">
+                    0s
+                </strong>
+
+                <span>
+                    TIME
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div
+            id="resultMessage"
+            class="note">
+
+        </div>
+
+
+        <button
+            class="primary"
+            onclick="playAgain()">
+
+            PLAY AGAIN
+
+        </button>
+
+
+        <button
+            class="secondary"
+            onclick="openLeaderboard()">
+
+            🏆 VIEW LEADERBOARD
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     LEADERBOARD SCREEN
+========================= -->
+
+<section
+    id="leaderboardScreen"
+    class="screen">
+
+
+    <div
+        class="panel"
+        style="margin-top:0">
+
+
+        <div class="title">
+            🏆 Leaderboard
+        </div>
+
+
+        <div
+            id="leaderboardList">
+
+        </div>
+
+
+        <button
+            class="secondary"
+            onclick="goHome()">
+
+            ← HOME
+
+        </button>
+
+
+        <button
+            class="secondary"
+            onclick="clearLeaderboard()">
+
+            CLEAR LOCAL LEADERBOARD
+
+        </button>
+
+
+        <div class="note">
+
+            Current version stores leaderboard
+            in this browser only.
+
+            <br><br>
+
+            Later we can connect this same
+            index.html to an online API/database
+            so every student shares one leaderboard.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   QUIZ QUESTIONS
+   ===================================================== */
+
+const questions = [
+
+    {
+        category:"Science",
+
+        question:
+        "Which gas is most abundant in Earth's atmosphere?",
+
+        options:[
+            "Oxygen",
+            "Nitrogen",
+            "Carbon dioxide",
+            "Hydrogen"
+        ],
+
+        answer:1,
+
+        hint:
+        "It makes up roughly four-fifths of Earth's atmosphere."
+    },
+
+
+    {
+        category:"Mathematics",
+
+        question:
+        "What is 15 × 8?",
+
+        options:[
+            "100",
+            "110",
+            "120",
+            "125"
+        ],
+
+        answer:2,
+
+        hint:
+        "Think of 15 groups of 8."
+    },
+
+
+    {
+        category:"General Knowledge",
+
+        question:
+        "Which is the largest planet in our Solar System?",
+
+        options:[
+            "Earth",
+            "Saturn",
+            "Jupiter",
+            "Neptune"
+        ],
+
+        answer:2,
+
+        hint:
+        "It is a gas giant and is larger than Saturn."
+    },
+
+
+    {
+        category:"Science",
+
+        question:
+        "Which organ pumps blood throughout the human body?",
+
+        options:[
+            "Lungs",
+            "Brain",
+            "Kidneys",
+            "Heart"
+        ],
+
+        answer:3,
+
+        hint:
+        "It contracts rhythmically to circulate blood."
+    },
+
+
+    {
+        category:"Mathematics",
+
+        question:
+        "If a triangle has angles 60°, 60° and 60°, what type of triangle is it?",
+
+        options:[
+            "Right-angled",
+            "Equilateral",
+            "Scalene",
+            "Obtuse"
+        ],
+
+        answer:1,
+
+        hint:
+        "All three sides are equal."
+    },
+
+
+    {
+        category:"English",
+
+        question:
+        "Which word is a synonym of 'rapid'?",
+
+        options:[
+            "Slow",
+            "Quick",
+            "Weak",
+            "Quiet"
+        ],
+
+        answer:1,
+
+        hint:
+        "Think of something happening at high speed."
+    },
+
+
+    {
+        category:"Science",
+
+        question:
+        "What is the process by which green plants make food using sunlight?",
+
+        options:[
+            "Respiration",
+            "Digestion",
+            "Photosynthesis",
+            "Transpiration"
+        ],
+
+        answer:2,
+
+        hint:
+        "The word begins with 'photo', meaning light."
+    },
+
+
+    {
+        category:"General Knowledge",
+
+        question:
+        "How many continents are commonly recognized on Earth?",
+
+        options:[
+            "5",
+            "6",
+            "7",
+            "8"
+        ],
+
+        answer:2,
+
+        hint:
+        "Count Africa, Antarctica, Asia, Europe, North America, South America and Australia."
+    },
+
+
+    {
+        category:"Mathematics",
+
+        question:
+        "What is 25% of 200?",
+
+        options:[
+            "25",
+            "40",
+            "50",
+            "75"
+        ],
+
+        answer:2,
+
+        hint:
+        "25% is one quarter."
+    },
+
+
+    {
+        category:"Science",
+
+        question:
+        "Which force pulls objects toward Earth?",
+
+        options:[
+            "Friction",
+            "Magnetism",
+            "Gravity",
+            "Electricity"
+        ],
+
+        answer:2,
+
+        hint:
+        "It is responsible for objects falling toward the ground."
+    }
+
+];
+
+
+/* =====================================================
+   VARIABLES
+   ===================================================== */
+
+let playerName = "";
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let correctAnswers = 0;
+
+let timeLeft = 30;
+
+let timer;
+
+let quizStartTime;
+
+let answered = false;
+
+let quizQuestions = [];
+
+let usedFifty = false;
+
+let usedHint = false;
+
+let usedSkip = false;
+
+
+/* =====================================================
+   SCREEN FUNCTION
+   ===================================================== */
+
+function showScreen(screenId){
+
+    document
+    .querySelectorAll(".screen")
+    .forEach(screen => {
+
+        screen.classList.remove("active");
+
+    });
+
+    document
+    .getElementById(screenId)
+    .classList.add("active");
+
+    window.scrollTo(0,0);
+}
+
+
+/* =====================================================
+   SHUFFLE
+   ===================================================== */
+
+function shuffle(array){
+
+    return [...array]
+    .sort(() => Math.random() - 0.5);
+
+}
+
+
+/* =====================================================
+   START QUIZ
+   ===================================================== */
+
+function startQuiz(){
+
+    playerName =
+    document
+    .getElementById("nameInput")
+    .value
+    .trim();
+
+
+    if(playerName === ""){
+
+        alert("Please enter your name.");
+
+        document
+        .getElementById("nameInput")
+        .focus();
+
+        return;
+
+    }
+
+
+    quizQuestions =
+    shuffle(questions)
+    .slice(0,10);
+
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    correctAnswers = 0;
+
+    usedFifty = false;
+
+    usedHint = false;
+
+    usedSkip = false;
+
+    quizStartTime = Date.now();
+
+
+    document
+    .getElementById("playerName")
+    .textContent = playerName;
+
+
+    showScreen("quizScreen");
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   LOAD QUESTION
+   ===================================================== */
+
+function loadQuestion(){
+
+    answered = false;
+
+    clearInterval(timer);
+
+
+    const q =
+    quizQuestions[currentQuestion];
+
+
+    document
+    .getElementById("questionNumber")
+    .textContent =
+    `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+
+
+    document
+    .getElementById("category")
+    .textContent =
+    q.category.toUpperCase();
+
+
+    document
+    .getElementById("question")
+    .textContent =
+    q.question;
+
+
+    const options =
+    document.getElementById("options");
+
+
+    options.innerHTML = "";
+
+
+    q.options.forEach((option,index)=>{
+
+        const button =
+        document.createElement("button");
+
+
+        button.className = "option";
+
+
+        button.innerHTML = `
+
+            <span class="option-key">
+                ${String.fromCharCode(65 + index)}
+            </span>
+
+            <span>
+                ${option}
+            </span>
+
+        `;
+
+
+        button.onclick =
+        () => selectAnswer(index);
+
+
+        options.appendChild(button);
+
+    });
+
+
+    document
+    .getElementById("progressBar")
+    .style.width =
+    `${(currentQuestion / quizQuestions.length) * 100}%`;
+
+
+    document
+    .getElementById("nextBox")
+    .classList.remove("show");
+
+
+    document
+    .getElementById("hint")
+    .classList.remove("show");
+
+
+    document
+    .getElementById("hint")
+    .textContent = "";
+
+
+    startTimer();
+
+}
+
+
+/* =====================================================
+   TIMER
+   ===================================================== */
+
+function startTimer(){
+
+    timeLeft = 30;
+
+    const timerElement =
+    document.getElementById("timer");
+
+
+    timerElement.textContent =
+    timeLeft;
+
+
+    timerElement.classList.remove("danger");
+
+
+    timer =
+    setInterval(()=>{
+
+        timeLeft--;
+
+
+        timerElement.textContent =
+        timeLeft;
+
+
+        if(timeLeft <= 8){
+
+            timerElement
+            .classList.add("danger");
+
+        }
+
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            selectAnswer(-1);
+
+        }
+
+    },1000);
+
+}
+
+
+/* =====================================================
+   SELECT ANSWER
+   ===================================================== */
+
+function selectAnswer(selected){
+
+    if(answered){
+
+        return;
+
+    }
+
+
+    answered = true;
+
+
+    clearInterval(timer);
+
+
+    const q =
+    quizQuestions[currentQuestion];
+
+
+    const allOptions =
+    document
+    .querySelectorAll(".option");
+
+
+    allOptions.forEach((button,index)=>{
+
+        button.disabled = true;
+
+
+        if(index === q.answer){
+
+            button.classList.add("correct");
+
+        }
+
+
+        if(index === selected &&
+           selected !== q.answer){
+
+            button.classList.add("wrong");
+
+        }
+
+    });
+
+
+    if(selected === q.answer){
+
+        correctAnswers++;
+
+        score += 100;
+
+    }
+
+
+    document
+    .getElementById("progressBar")
+    .style.width =
+    `${((currentQuestion + 1) / quizQuestions.length) * 100}%`;
+
+
+    document
+    .getElementById("nextBox")
+    .classList.add("show");
+
+
+    if(currentQuestion === quizQuestions.length - 1){
+
+        document
+        .getElementById("nextBtn")
+        .textContent =
+        "SEE MY RESULT →";
+
+    }else{
+
+        document
+        .getElementById("nextBtn")
+        .textContent =
+        "NEXT QUESTION →";
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT QUESTION
+   ===================================================== */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(currentQuestion >= quizQuestions.length){
+
+        finishQuiz();
+
+        return;
+
+    }
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   50:50
+   ===================================================== */
+
+function useFifty(){
+
+    if(usedFifty || answered){
+
+        return;
+
+    }
+
+
+    usedFifty = true;
+
+
+    const q =
+    quizQuestions[currentQuestion];
+
+
+    let wrongAnswers = [];
+
+
+    for(let i=0;i<q.options.length;i++){
+
+        if(i !== q.answer){
+
+            wrongAnswers.push(i);
+
+        }
+
+    }
+
+
+    wrongAnswers =
+    shuffle(wrongAnswers)
+    .slice(0,2);
+
+
+    wrongAnswers.forEach(index=>{
+
+        const option =
+        document
+        .querySelectorAll(".option")[index];
+
+
+        option.classList.add("removed");
+
+    });
+
+
+    document
+    .getElementById("fiftyBtn")
+    .classList.add("used");
+
+}
+
+
+/* =====================================================
+   HINT
+   ===================================================== */
+
+function useHint(){
+
+    if(usedHint || answered){
+
+        return;
+
+    }
+
+
+    usedHint = true;
+
+
+    const q =
+    quizQuestions[currentQuestion];
+
+
+    const hint =
+    document.getElementById("hint");
+
+
+    hint.textContent =
+    "💡 " + q.hint;
+
+
+    hint.classList.add("show");
+
+
+    document
+    .getElementById("hintBtn")
+    .classList.add("used");
+
+}
+
+
+/* =====================================================
+   SKIP
+   ===================================================== */
+
+function useSkip(){
+
+    if(usedSkip || answered){
+
+        return;
+
+    }
+
+
+    usedSkip = true;
+
+
+    document
+    .getElementById("skipBtn")
+    .classList.add("used");
+
+
+    clearInterval(timer);
+
+
+    currentQuestion++;
+
+
+    if(currentQuestion >= quizQuestions.length){
+
+        finishQuiz();
+
+        return;
+
+    }
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   FINISH QUIZ
+   ===================================================== */
+
+function finishQuiz(){
+
+    clearInterval(timer);
+
+
+    const totalTime =
+    Math.round(
+        (Date.now() - quizStartTime) / 1000
+    );
+
+
+    const accuracy =
+    Math.round(
+        (correctAnswers / quizQuestions.length) * 100
+    );
+
+
+    document
+    .getElementById("resultName")
+    .textContent =
+    playerName;
+
+
+    document
+    .getElementById("finalScore")
+    .textContent =
+    score;
+
+
+    document
+    .getElementById("correctResult")
+    .textContent =
+    `${correctAnswers}/${quizQuestions.length}`;
+
+
+    document
+    .getElementById("accuracyResult")
+    .textContent =
+    accuracy + "%";
+
+
+    document
+    .getElementById("timeResult")
+    .textContent =
+    totalTime + "s";
+
+
+    let message;
+
+
+    if(accuracy === 100){
+
+        message =
+        "👑 Perfect Score! Outstanding performance.";
+
+    }
+
+    else if(accuracy >= 80){
+
+        message =
+        "🏆 Excellent! You are doing great.";
+
+    }
+
+    else if(accuracy >= 50){
+
+        message =
+        "👍 Good attempt. Keep practicing.";
+
+    }
+
+    else{
+
+        message =
+        "🎯 Keep learning and try again.";
+
+    }
+
+
+    document
+    .getElementById("resultMessage")
+    .textContent =
+    message;
+
+
+    saveScore(totalTime);
+
+
+    showScreen("resultScreen");
+
+}
+
+
+/* =====================================================
+   SAVE LEADERBOARD
+   ===================================================== */
+
+function saveScore(time){
+
+    let leaderboard =
+    JSON.parse(
+        localStorage.getItem("quizLeaderboard") || "[]"
+    );
+
+
+    leaderboard.push({
+
+        name:playerName,
+
+        score:score,
+
+        correct:correctAnswers,
+
+        total:quizQuestions.length,
+
+        time:time,
+
+        date:new Date().toISOString()
+
+    });
+
+
+    leaderboard.sort((a,b)=>{
+
+        if(b.score !== a.score){
+
+            return b.score - a.score;
+
+        }
+
+        return a.time - b.time;
+
+    });
+
+
+    leaderboard =
+    leaderboard.slice(0,10);
+
+
+    localStorage.setItem(
+        "quizLeaderboard",
+        JSON.stringify(leaderboard)
+    );
+
+}
+
+
+/* =====================================================
+   OPEN LEADERBOARD
+   ===================================================== */
+
+function openLeaderboard(){
+
+    showScreen("leaderboardScreen");
+
+    loadLeaderboard();
+
+}
+
+
+/* =====================================================
+   LOAD LEADERBOARD
+   ===================================================== */
+
+function loadLeaderboard(){
+
+    const leaderboard =
+    JSON.parse(
+        localStorage.getItem("quizLeaderboard") || "[]"
+    );
+
+
+    const container =
+    document.getElementById("leaderboardList");
+
+
+    container.innerHTML = "";
+
+
+    if(leaderboard.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                No scores yet.<br><br>
+
+                Play the first quiz and become
+                <b>#1</b>!
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    leaderboard.forEach((player,index)=>{
+
+        const row =
+        document.createElement("div");
+
+
+        row.className =
+        "leader-row";
+
+
+        let rank;
+
+
+        if(index === 0){
+
+            rank = "👑";
+
+        }else if(index === 1){
+
+            rank = "🥈";
+
+        }else if(index === 2){
+
+            rank = "🥉";
+
+        }else{
+
+            rank = index + 1;
+
+        }
+
+
+        row.innerHTML = `
+
+            <div class="rank">
+                ${rank}
+            </div>
+
+            <div>
+
+                <div class="leader-name">
+                    ${escapeHTML(player.name)}
+                </div>
+
+                <div class="leader-info">
+
+                    ${player.correct}/${player.total}
+                    correct •
+                    ${player.time}s
+
+                </div>
+
+            </div>
+
+            <div class="leader-score">
+
+                ${player.score} XP
+
+            </div>
+
+        `;
+
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+function escapeHTML(text){
+
+    return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   PLAY AGAIN
+   ===================================================== */
+
+function playAgain(){
+
+    document
+    .getElementById("nameInput")
+    .value =
+    playerName;
+
+
+    startQuiz();
+
+}
+
+
+/* =====================================================
+   HOME
+   ===================================================== */
+
+function goHome(){
+
+    showScreen("homeScreen");
+
+}
+
+
+/* =====================================================
+   CLEAR LEADERBOARD
+   ===================================================== */
+
+function clearLeaderboard(){
+
+    const confirmDelete =
+    confirm(
+        "Are you sure you want to clear the local leaderboard?"
+    );
+
+
+    if(confirmDelete){
+
+        localStorage.removeItem(
+            "quizLeaderboard"
+        );
+
+
+        loadLeaderboard();
+
+    }
+
+}
+
+
+/* =====================================================
+   ENTER KEY
+   ===================================================== */
+
+document
+.getElementById("nameInput")
+.addEventListener("keydown",(event)=>{
+
+    if(event.key === "Enter"){
+
+        startQuiz();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
